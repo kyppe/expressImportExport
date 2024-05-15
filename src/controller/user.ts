@@ -105,9 +105,9 @@ const login = async (req: Request, res: Response)=> {
 // Register
 const register = async (req: Request, res: Response)=> {
   try {
-    const { email, password, nom, role,prenom } = req.body;
+    const { email, password, nom, role,prenom ,phone} = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await User.create({ email, password: hashedPassword, nom, role ,prenom});
+    const newUser = await User.create({ email, password: hashedPassword, nom, role ,prenom,phone});
     res.status(201).json(newUser);
   } catch (error) {
     console.error(error);
