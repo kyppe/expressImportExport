@@ -1,6 +1,6 @@
 import express from "express"
-import controllers from "../controller/movement.js"
-import authenticateToken from "../MiddleWare/authenticate.js"
+import controllers from "../controller/movement"
+import authenticateToken from "../middleWare/authenticat"
 
 const router = express.Router();
 router.get("/",authenticateToken,controllers.getAllMovement);

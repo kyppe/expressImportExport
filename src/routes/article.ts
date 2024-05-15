@@ -1,6 +1,6 @@
 import express from "express"
-import controllers from "../controller/article.js"
-import authenticateToken from "../MiddleWare/authenticate.js"
+import controllers from "../controller/article"
+import authenticateToken from "../MiddleWare/authenticat"
 
 const router = express.Router();
 router.get("/",authenticateToken,controllers.getAllArticle);

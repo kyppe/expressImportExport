@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "incremental": true,
+
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist"
+  },
+  "ts-node": {
+    "transpileOnly": true
+ },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
