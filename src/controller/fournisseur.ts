@@ -59,13 +59,15 @@ const deleteFournisseur = async (req: Request, res: Response)=> {
 const updateFournisseur = async (req: Request, res: Response)=> {
   try {
     const { id } = req.params;
-    const [updatedRows, [updatedFournisseur]] = await Fournisseur.update(req.body, {
-      where: { id },
-      returning: true,
-    });
-    if (updatedRows === 0) {
+    console.log(id);
+    console.log(req.body)
+  let updatedFournisseur = await Fournisseur.findByPk(id);
+    
+    if (!updatedFournisseur) {
       res.status(404).json({ message: "Fournisseur not found" });
     } else {
+      updatedFournisseur.set(req.body)
+      await updatedFournisseur.save()
       res.status(200).json(updatedFournisseur);
     }
   } catch (error) {

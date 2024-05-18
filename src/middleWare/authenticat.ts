@@ -10,7 +10,6 @@ function authenticateToken(req:Request, res:Response, next:NextFunction) {
   if (token == null) return res.sendStatus(401)
 
   jwt.verify(token,vars.ACCESS_TOKEN_SECRET, (err, User) => {
-    console.log(err)
     if (err) return res.sendStatus(403)
     req.body.User = User
     next()

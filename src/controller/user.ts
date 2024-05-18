@@ -64,11 +64,20 @@ const deleteUser = async (req: Request, res: Response)=> {
 const updateUser = async (req: Request, res: Response)=> {
   try {
     const { id } = req.params;
-    const updatedUser = await User.update(req.body, { where: { id }, returning: true });
-    if (updatedUser[0] === 0) {
+    console.log(id);
+    console.log(req.body);
+    
+    let updatedUser = await User.findByPk(id);
+    
+    if (!updatedUser) {
       res.status(404).json({ message: "User not found" });
     } else {
-      res.status(200).json(updatedUser[1][0]);
+      updatedUser.set(req.body)
+      console.log(updatedUser);
+
+      await updatedUser.save()
+      
+      res.status(200).json(updatedUser);
     }
   } catch (error) {
     console.error(error);
@@ -118,7 +127,7 @@ const register = async (req: Request, res: Response)=> {
 // Add Article
 const addArt = async (req: Request, res: Response)=> {
   try {
-    const { code, name, qte } = req.body;
+    const { code, name, qte ,fournisseurId} = req.body;
     const userId = req.body.User?.id;  // Assuming you have set req.user in middleware
     console.log(userId);
     
@@ -129,7 +138,7 @@ const addArt = async (req: Request, res: Response)=> {
     article.qte += qte;
     await article.save();
 
-    const movement = await Movement.create({ userId, type: "add", articleId: article.id, value: qte });
+    const movement = await Movement.create({ userId, type: "reception", articleId: article.id, value: qte, fournisseurId:fournisseurId});
     const user = await User.findByPk(userId);
     if (user) {
       await user.$add('movements', movement);
@@ -157,7 +166,7 @@ const subtractArt = async (req: Request, res: Response)=> {
     article.qte = Math.max(0, article.qte - qte);
     await article.save();
 
-    const movement = await Movement.create({ userId, type: "subtract", articleId: article.id, value: qte });
+    const movement = await Movement.create({ userId, type: "expedition", articleId: article.id, value: qte });
     const user = await User.findByPk(userId);
     if (user) {
       await user.$add('movements', movement);
